@@ -159,4 +159,5 @@ for i in response['data']['Get'][class_name]:
 ```
 ![final_output](https://github.com/LuJH12/Weaviate-use/blob/main/figure/final_output.png)
 
-# 
+# 总结
+本教程只作简单使用。
