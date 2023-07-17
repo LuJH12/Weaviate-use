@@ -1,5 +1,5 @@
 # Weaviate-use
-由于官网的教程写得比较复杂，所以笔者写一个简单的例子
+由于官网的教程写得比较复杂，所以笔者写一个简单的例子，注意：本教程只作简单使用(这个例子只是举个例子，并未追求好的检索效果)。
 
 可以看[jupyter](https://github.com/LuJH12/Weaviate-use/blob/main/Weaviate_example.ipynb)文件，里面有详细的注释
 
@@ -103,4 +103,60 @@ df
 ```
 ![sentence_data_embeddings](https://github.com/LuJH12/Weaviate-use/blob/main/figure/sentence_data_embeddings.png)
 
+在处理好数据后，我们就可以开始将数据导入Weaviate中了
+```python
+with client.batch(
+    batch_size=100
+) as batch:
+    for i in range(df.shape[0]):
+#         if i%20 == 0:
+        print('importing data: {}'.format(i+1))
+        # 定义properties
+        properties = {
+            'sentence_id': i+1,          # 这里是句子id, [1, 2, 3, ...]
+            'sentence': df.sentence[i],  # 这里是句子内容
+#             'embeddings': df.embeddings[i],
+        }
+        custom_vector = df.embeddings[i] # 这里是句子向量化后的数据
+        # 导入数据
+        client.batch.add_data_object(
+            properties,
+            class_name=class_name,
+            vector=custom_vector
+        )
+print('import completed')
+```
 
+在导入数据后，就可以开始进行相似度搜索了，这里先将我们要查询的句子/词进行向量化，然后给到weaviate中，并选择返回top5个。
+```python
+query = model.encode(['除暴安良'])[0].tolist()   # 这里将问题进行embeddings
+nearVector = {
+    'vector': query
+}
+
+response = (
+    client.query
+    .get(class_name, ['sentence_id', 'sentence']) # 第一个参数为class名字，第二个参数为需要显示的信息
+    .with_near_vector(nearVector)             # 使用向量检索，nearVector为输入问题的向量形式
+    .with_limit(5)                            # 返回个数(TopK)，这里选择返回5个
+    .with_additional(['distance'])            # 选择是否输出距离
+    .do()
+)
+```
+
+在运行代码后，我们可以看下搜索结果：
+```python
+print(json.dumps(response, indent=2))  # 看下输出
+```
+![code_output](https://github.com/LuJH12/Weaviate-use/blob/main/figure/code_output.png)
+
+整理一下并输出，可以看到，第一句话确实有`除暴安良`这几个字
+```python
+# 输出结果
+for i in response['data']['Get'][class_name]:
+    print('='*20)
+    print(i['sentence'])
+```
+![final_output](https://github.com/LuJH12/Weaviate-use/blob/main/figure/final_output.png)
+
+# 
