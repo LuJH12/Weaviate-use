@@ -16,4 +16,6 @@
 打开官网后，会看到这个界面，自己选择需要安装的版本、模块等。在选择完成后，可以在下面看到给你生成的一个串命令。
 
 我这里的安装是选择了最简单的(全默认)，生成了下列命令
-`curl -o docker-compose.yml "https://configuration.weaviate.io/v2/docker-compose/docker-compose.yml?modules=standalone&runtime=docker-compose&weaviate_version=v1.20.1"`
+```
+curl -o docker-compose.yml "https://configuration.weaviate.io/v2/docker-compose/docker-compose.yml?modules=standalone&runtime=docker-compose&weaviate_version=v1.20.1"
+```
