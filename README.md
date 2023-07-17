@@ -41,9 +41,66 @@ pip install weaviate-client
 # 如何在Python上使用Weaviate
 这里使用了一个自己随便构建的数据集，是一个有20条
 
-## 导包
+先导包
+```python
+import weaviate
+from langchain.document_loaders import DirectoryLoader, WebBaseLoader
+import pandas as pd
+```
+
+定义下Weaviate的参数等
 ```python
 # 定义client
 client = weaviate.Client(url='http://localhost:8080')
-class_name = 'Stephen_Chow'
+class_name = 'Stephen_Chow'  # class的名字
+
+class_obj = {
+    'class': class_name,         # class的名字
+    'vectorIndexConfig':{
+        'distance': 'l2-squared',   # 这里的distance是选择向量检索方式，这里选择的是欧式距离
+    },
+}
 ```
+
+创建class
+```python
+client.schema.create_class(class_obj)
+```
+
+数据导入，我这里使用的是自己构建的一个关于周星驰台词的数据，长度为20，格式为csv
+```
+# 导入数据
+df = pd.read_csv('data.csv', encoding='GB18030')
+# 转成list形式
+sentence_data = df.sentence.tolist()
+df
+```
+![sentence_data](https://github.com/LuJH12/Weaviate-use/blob/main/figure/sentence_data.png)
+
+在整理好数据后，我们就要把数据转成向量形式，我们先定义embeddings模型
+```python
+# 定义embeddings模型
+from sentence_transformers import SentenceTransformer
+model = SentenceTransformer('emb_model/text2vec-large-chinese')   # embeddings模型路径
+```
+
+将数据进行向量化
+```python
+# 句子向量化
+sentence_embeddings = model.encode(sentence_data)
+# sentence_embeddings = model.encode(sentence_data)
+sentence_embeddings
+```
+![sentence_embeddings](https://github.com/LuJH12/Weaviate-use/blob/main/figure/sentence_embeddings.png)
+
+为了方便，我们再将`sentence_data`和`sentence_embeddings`整合到同一个DataFrame中
+```python
+# 将句子和embeddings后的数据整合到DataFrame里面
+data = {'sentence':sentence_data,
+        'embeddings':sentence_embeddings.tolist()}
+df = pd.DataFrame(data)
+df
+```
+![sentence_data_embeddings](https://github.com/LuJH12/Weaviate-use/blob/main/figure/sentence_data_embeddings.png)
+
+
