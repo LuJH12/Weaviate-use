@@ -32,3 +32,18 @@ docker ps -a
 如果成功安装，是有weaviate的镜像会显示的
 
 ![docker_weaviate](https://github.com/LuJH12/Weaviate-use/blob/main/figure/docker_weaviate.png)
+
+## 安装Weaviate的python库
+```
+pip install weaviate-client
+```
+
+# 如何在Python上使用Weaviate
+这里使用了一个自己随便构建的数据集，是一个有20条
+
+## 导包
+```
+# 定义client
+client = weaviate.Client(url='http://localhost:8080')
+class_name = 'Stephen_Chow'
+```
