@@ -12,7 +12,7 @@
 这里的安装是使用docker进行安装，所以请务必先安装好docker。
 
 [官网安装](https://weaviate.io/developers/weaviate/installation/docker-compose)方法：
-
+![test image size](https://github.com/LuJH12/Weaviate-use/blob/main/figure/Weaviate_install.png){:height="50%" width="50%"}
 打开官网后，会看到这个界面，自己选择需要安装的版本、模块等。在选择完成后，可以在下面看到给你生成的一个串命令。
 
 我这里的安装是选择了最简单的(全默认)，生成了下列命令，并在命令行中输入
