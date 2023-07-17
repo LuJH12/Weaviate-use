@@ -42,7 +42,7 @@ pip install weaviate-client
 这里使用了一个自己随便构建的数据集，是一个有20条
 
 ## 导包
-```
+```python
 # 定义client
 client = weaviate.Client(url='http://localhost:8080')
 class_name = 'Stephen_Chow'
