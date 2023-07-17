@@ -75,7 +75,7 @@ df = pd.read_csv('data.csv', encoding='GB18030')
 sentence_data = df.sentence.tolist()
 df
 ```
-![sentence_data](https://github.com/LuJH12/Weaviate-use/blob/main/figure/sentence_data.png)
+![sentence_data_embeddings](https://github.com/LuJH12/Weaviate-use/blob/main/figure/sentence_data_embeddings.png)
 
 在整理好数据后，我们就要把数据转成向量形式，我们先定义embeddings模型
 ```python
@@ -101,7 +101,7 @@ data = {'sentence':sentence_data,
 df = pd.DataFrame(data)
 df
 ```
-![sentence_data_embeddings](https://github.com/LuJH12/Weaviate-use/blob/main/figure/sentence_data_embeddings.png)
+![sentence_data](https://github.com/LuJH12/Weaviate-use/blob/main/figure/sentence_data.png)
 
 在处理好数据后，我们就可以开始将数据导入Weaviate中了
 ```python
