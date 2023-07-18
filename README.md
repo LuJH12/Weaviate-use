@@ -70,7 +70,7 @@ client.schema.create_class(class_obj)
 数据导入，我这里使用的是自己构建的一个关于周星驰台词的数据，长度为20，格式为csv
 ```
 # 导入数据
-df = pd.read_csv('data.csv', encoding='GB18030')
+df = pd.read_csv('data/data.csv', encoding='GB18030')
 # 转成list形式
 sentence_data = df.sentence.tolist()
 df
